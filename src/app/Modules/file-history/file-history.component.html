@@ -1,0 +1,136 @@
+<div class="maincontainer">
+  <div class="box box1">
+    <app-sidebar></app-sidebar>
+  </div>
+
+
+  <div class="filehistory">
+    <div class="heading">
+      <p>View and Download all your files and summarizd content here and track your progress🕵️</p>
+    </div>
+
+    <div class="filehistorycontainer">
+      <div id="chart" class="chartcontainer">
+      </div>
+      <div class="togglecontainer">
+        <p>Sort Order: <strong>{{ sortOrder === 'asc' ? 'Ascending ⬆️' : 'Descending ⬇️' }}</strong></p>
+        <label class="toggle-switch">
+          <input type="checkbox" (change)="toggleSortOrder()" [checked]="sortOrder === 'desc'">
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+
+
+
+      <table>
+        <thead>
+          <tr>
+           
+            <th>Document Name</th>
+            <th>Summarized content</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let doc of getdata">
+          
+            <td>
+              {{ doc.document_name }}
+              <div class="actionsbuttons">
+                <button (click)="displayContentsample(doc.file, doc.fileType)">View</button>
+                <img src="\assets\images\download.png" (click)="downloadFileauth(doc.file, doc.fileType, doc.document_name)"style="height: 20px; width: auto;" alt="">
+
+              </div>
+            </td>
+            <td>
+              {{doc.summarized_document_name}}
+              <div class="actionsbuttons">
+                <button (click)="displayContentSummary(doc.summarized_document_content)">View</button>
+                <img src="\assets\images\download.png"  (click)="showselectformat(doc.summarized_document_content)"style="height: 20px; width: auto;" alt="">
+
+              </div>
+            </td>
+
+            <td>{{ doc.date }}</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <div *ngIf="selectedContent" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-body">
+          <img *ngIf="contentType === 'image'" [src]="selectedContent" alt="Displayed Image" style="max-width: 100%;">
+
+          <pdf-viewer *ngIf="contentType === 'pdf'" [src]="selectedContent" [autoresize]="true" [original-size]="false"
+            [fit-to-page]="true" style="width: 100%; height: 400px; display: block;">
+          </pdf-viewer>
+
+          <p style="font-weight: 100;font-size: 18px;" *ngIf="contentType === 'text'">{{ selectedContent }}</p>
+
+          <div *ngIf="contentType === 'doc'" [innerHTML]="selectedContent"></div>
+
+          <!-- Download Button -->
+
+          <!-- Format Selection Dropdown (Shows after clicking Download) -->
+
+        </div>
+        <button (click)="closeSummary()">Close</button>
+      </div>
+    </div>
+
+
+
+
+
+
+    <div *ngIf="showselectformatvariable || downloadfile" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="selectformat" *ngIf="showselectformatvariable">
+            <select [(ngModel)]="selectedFormat" class="custom-select">
+              <option value="" disabled selected>Select File Type</option>
+              <option value="txt">📝 TXT</option>
+              <option value="pdf">📄 PDF</option>
+              <option value="docx">📑 DOC</option>
+            </select>
+            <div class="buttoncontainer">
+              <button (click)="closeSummary()">Cancel</button>
+              <button (click)="downloadSummary(summarizedcontent,selectedFormat)">OK</button>
+
+            </div>
+          </div>
+
+          <div class="downloadoriginalfile" *ngIf="downloadfile">
+            <p>Do you want to download the scanned file?</p>
+            <div class="buttoncontainer">
+              <button (click)="closeSummary()">cancel</button>
+              <button (click)="downloadFile(this.content,this.fileType,this.fileName)">ok</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- <div *ngIf="selectedContent" class="modal">
+  <p>{{ selectedContent}}</p>
+  <button (click)="closeSummary()">Close</button>
+</div> -->

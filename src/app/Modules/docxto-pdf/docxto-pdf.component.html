@@ -1,0 +1,22 @@
+
+<div class="container">
+    <h1>DOCX to PDF Converter</h1>
+  
+    <!-- File Input -->
+    <input type="file" (change)="onFileChange($event)" accept=".docx" />
+    
+    <!-- Pagination Controls -->
+    <div class="pagination-controls">
+      <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+      <span>Page {{currentPage}} of {{totalPages}}</span>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+  
+    <!-- Preview Container -->
+    <div #previewContainer class="preview-container">
+      <div [innerHTML]="previewContent"></div>
+    </div>
+  
+    <!-- Download Button -->
+    <button (click)="onDownloadClick()">Download as PDF</button>
+  </div>

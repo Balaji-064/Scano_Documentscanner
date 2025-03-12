@@ -1,0 +1,23 @@
+<div class="box1">
+  <img [src]="images || 'assets/images/user.png'" alt="img" class="profile-pic">
+  <div *ngIf="!images">No Profile Picture</div>
+
+  <ul class="menu-list">
+    <li routerLink="/home">Home</li>
+    <li routerLink="/profile">Profile</li>
+    <li routerLink="/history">File records</li>
+    <li (click)="openModal()">Logout</li>
+  </ul>
+
+  <div class="footer">Footer</div>
+</div>
+
+<!-- Logout Modal (Overlay) -->
+<div class="overlay" *ngIf="isModalOpen">
+  <div class="modal">
+    <p>Are you sure you want to log out?</p>
+    <img src="\assets\images\logout.png"  alt="img"> <br>
+    <button (click)="logOut()" >Yes, Log me out</button>
+    <button (click)="closeModal()">Naah,Just Kidding</button>
+  </div>
+</div>

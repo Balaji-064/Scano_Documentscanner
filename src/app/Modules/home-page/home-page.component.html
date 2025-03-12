@@ -1,0 +1,68 @@
+
+<div class="container">
+  <div class="box box1">
+    <app-sidebar></app-sidebar>
+  </div>
+    
+  
+    <!-- Middle Section (50%) -->
+    <div class="box box2">
+      <!-- Button to trigger modal -->
+      <button class="pdfConvertorButton" (click)="openModal()">Pdf convertor</button>
+  
+      <!-- Modal Overlay -->
+      <div class="modal" *ngIf="isModalOpen">
+        <div class="modal-content">
+          <span class="close-btn" (click)="closeModal()">&times;</span>
+          <div class="pdfconvertor" *ngIf="isPdfConvertorOpen">
+          <h2>Choose your action</h2>
+          <div class="btn-group">
+            <button class="btn" routerLink="/img">Img to pdf</button>
+            <button class="btn" routerLink="/doc"> doc to pdf</button>
+          </div>
+        </div>
+        
+        </div>
+      </div>
+  
+      <!-- Centered Dashed Box -->
+      <div class="centered-box">
+        <h2>Upload Your Files</h2>
+        <p>Choose to upload or capture live</p>
+        <div class="btn-group">
+          <button class="btn" [routerLink]="['/camera']">📷 Access Camera</button>
+          <button class="btn" [routerLink]="['/upload']">📂 Upload Files</button>
+        </div>
+      </div>
+      <div class="video-container">
+        <video controls>
+          <source src="video.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+  
+  
+  
+    </div>
+  
+  
+    <!-- Right Section (Remaining Width) -->
+    <div class="box box3">
+      <h3>Explore Our Key Features</h3>
+      <ul class="extra-list">
+        <li>
+          <strong>Instant File Conversion</strong><br>
+          Convert your images, documents, and videos to various formats in seconds with our seamless converter tool.
+        </li>
+        <li>
+          <strong>Secure Storage</strong><br>
+          Store and access your files securely from anywhere. Your data is safe with us!
+        </li>
+  
+      </ul>
+  
+      <!-- Call to Action Section -->
+  
+  
+    </div>
+  </div>

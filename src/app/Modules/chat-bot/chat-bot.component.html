@@ -1,0 +1,22 @@
+<div class="chat-container">
+    <div class="chat-box">
+      <div class="chat-message">
+        <p>{{ extractedTextfinal}}</p>
+        <p>{{summarizedText}}</p>
+      </div>
+    </div>
+  
+    <input
+      type="text"
+      [(ngModel)]="extractedText"
+      placeholder="Type a message..."
+      (keyup.enter)="sendMessage(summarylevel)"
+    />
+    <button (click)="sendMessage(summarylevel)">Send</button>
+    
+    <p>{{userid}}</p>
+    <p>{{summarylevel}}</p>
+    
+
+
+  </div>

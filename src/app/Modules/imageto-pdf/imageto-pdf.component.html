@@ -1,0 +1,48 @@
+<div class="container">
+    <h2>Upload or Capture Multiple Images and Preview</h2>
+  
+    <!-- File input to upload images -->
+    <input type="file" (change)="onFileSelect($event)" accept="image/*" multiple />
+    <br /><br />
+  
+    <!-- Camera Section -->
+    <div class="camera-preview">
+      <video id="cameraFeed" *ngIf="stream" [srcObject]="stream" autoplay></video>
+    </div>
+    <br />
+    <button (click)="startCamera()" [disabled]="isCameraStarted">Start Camera</button>
+    <button (click)="captureImage()" [disabled]="!isCameraStarted">Capture</button>
+    
+  
+    <!-- Display captured images -->
+    <div *ngIf="capturedImages.length > 0" class="captured-images">
+      <h3>Captured Images:</h3>
+      <div class="image-thumbnails">
+        <div *ngFor="let imageUrl of capturedImages; let i = index" class="image-item">
+          <div class="image-container">
+            <img [src]="imageUrl" alt="img {{ i + 1 }}" class="thumbnail-image" />
+            <button (click)="deleteImage(i, true)" class="delete-button">X</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Display uploaded images -->
+    <div *ngIf="imageUrls.length > 0" class="uploaded-images">
+      <h3>Uploaded Images:</h3>
+      <div class="image-thumbnails">
+        <div *ngFor="let imageUrl of imageUrls; let i = index" class="image-item">
+          <div class="image-container">
+            <img [src]="imageUrl" alt="img {{ i + 1 }}" class="thumbnail-image" />
+            <button (click)="deleteImage(i, false)" class="delete-button">X</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <br /><br />
+  
+    <!-- Button to generate PDF -->
+    <button [disabled]="!isGeneratePdfEnabled()" (click)="generatePDF()">Generate PDF</button>
+  </div>
+

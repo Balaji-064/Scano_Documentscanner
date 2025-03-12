@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+  <div class="landingcontainer">
+    <div class="navbar">
+        <ul>
+            <a href=""><li>HOME</li></a>
+            <a href="#trial"><li>TRIAL</li></a>
+            <a href="#features"><li>FEATURES</li></a>
+            <a href="#teammembers"><li>TEAM MEMBERS</li></a>
+            <a href="#footer"><li>CONTACT US</li></a>
+            <a  [routerLink]="['login']"><button>LOGIN</button></a>
+        </ul>
+    </div>
+    <div class="image-container">
+       
+        <img src="/assets/images/piggy.jpg" alt="Piggy Bank">
+    </div>
+</div>
+
+  <div class="heading" id="trial">
+    <h1>TRIAL</h1>
+    <P>Scano provides various services to interact,convert and grow your experience on managing</P>
+  </div>
+
+  
+<div class="slideshow-container">
+
+  
+  
+  <div class="mySlides fade">
+    <img src="/assets/images/piggy.jpg" alt="Image 1">
+    <div class="text">
+        <h1>Smart AI Chat Assistance</h1>
+        <p>Experience seamless interaction with our AI-powered chatbot, designed to provide instant, accurate responses, enhancing productivity and ensuring effortless expense management and query resolution in real-time.</p>
+        <div class="button-container">
+            <button routerLink="/chat">free trail</button>
+        <button>Discover</button>
+        </div>
+        
+    </div>
+  </div>
+
+  <div class="mySlides fade">
+    <img src="\assets\images\demo2.png" alt="Image 2">
+    <div class="text">
+        <h1>Effortless File Conversion</h1>
+        <p>Transform files into multiple formats like PDF, DOC, and TXT with ease. Our service ensures compatibility, accessibility, and high-quality results while maintaining data integrity across platforms. </p>
+        <div class="button-container">
+            <button  routerLink="/camera">free trail</button>
+        <button>Discover</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<div style="text-align:center; margin-top: 10px;">
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+</div>
+
+<div class="heading" id="features">
+  <h1>FEATURES</h1>
+  <P>Scano is the first application that helps you to manage the bills easily and helps you to track the expenses!</P>
+</div>
+<div class="featurescard-container">
+  <div class="card">
+    <img src="\assets\images\cardvector.jpg" alt="">
+    <p>Easily upload bills and documents, extract text using AI-powered OCR, and manage expenses seamlessly with features tailored for accuracy, efficiency, and enhanced productivity.</p>
+  </div>
+
+  <div class="card">
+    <img src="\assets\images\cardvector.jpg" alt="">
+    <p>Leverage advanced AI to analyze extracted data and answer queries like total expenses, specific item costs, or categorized spending, providing insights in real-time for better financial decisions.</p>
+  </div>
+
+  <div class="card">
+    <img src="\assets\images\cardvector.jpg" alt="">
+    <p>Convert images to various formats, including PDF, DOC, and TXT, ensuring compatibility and accessibility across platforms while maintaining high-quality results and data integrity.</p>
+  </div>
+</div>
+
+<div class="heading" id="teammembers">
+  <h1>TEAM MEMBERS</h1>
+</div>
+
+<div class="teammembers">
+  <div class="teammemberscard">
+    <img src="\assets\images\cardvector.jpg" alt="">
+    <h3>BALAJI</h3>
+    <h5>INTERN</h5>
+    <p>kamaraj college of engineering and technology</p>
+  </div>
+
+  <div class="teammemberscard">
+    <img src="\assets\images\cardvector.jpg" alt="">
+    <h3>BALAJI</h3>
+    <h5>INTERN</h5>
+    <p>kamaraj college of engineering and technology</p>
+  </div>
+
+  <div class="teammemberscard">
+    <img src="\assets\images\cardvector.jpg" alt="">
+    <h3>BALAJI</h3>
+    <h5>INTERN</h5>
+    <p>kamaraj college of engineering and technology</p>
+  </div>
+</div>
+
+<footer class="footer" id="footer">
+  <div class="container">
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h3>About Us</h3>
+        <p>We provide AI-powered solutions for seamless expense management and intelligent query resolution. Our tools ensure productivity and financial clarity.</p>
+      </div>
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Contact Us</h3>
+        <p>Email: supportScano.com</p>
+        <p>Phone: +123-456-7890</p>
+        <div class="social-icons">
+          <a href="https://www.youtube.com/"><img src="\assets\images\facebook (1).png" alt="Facebook"></a>
+          <a href="#"><img src="\assets\images\twitter-alt-circle (1).png" alt="Twitter"></a>
+          <a href="#"><img src="\assets\images\linkedin.png" alt="LinkedIn"></a>
+          <a href="#"><img src="\assets\images\instagram.png" alt="Instagram"></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Scano. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>
+

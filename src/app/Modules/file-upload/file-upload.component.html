@@ -1,0 +1,123 @@
+<div class="upload-container">
+    <!-- Left Section: Upload & Summary -->
+    <div class="left-section">
+      <div class="upload-section">
+        <input type="file" id="fileInput" (change)="onFileChange($event)">
+      </div>
+  
+  
+      <!-- Summary Section Below Upload -->
+      <div class="summary-section">
+        <h3> Summarized Content</h3>
+        <p *ngIf="summarizedContent">{{ summarizedContent }}</p>
+        <div *ngIf="!summarizedContent" class="chatsummary">
+          <p>Summarized content will display here after the selection of the summarizing length</p>
+          <img src="/assets/images/magic-wand.gif" alt="" />
+        </div>
+        <button id="gotofilehistory" (click)="addToCouch()">Go to file sample history to download</button>
+      </div>
+    </div>
+  
+    <!-- Right Section: Content Display -->
+    <div class="right-section">
+  
+      <div class="content-display" (mouseup)="onTextSelect()" (touchend)="onTextSelect()">
+        <div class="display-container" *ngIf="uploadvalue">
+          <!-- Display Text Content -->
+          <div *ngIf="selectedFormat === 'txt' && textChunks.length > 0" [innerHTML]="textChunks[currentPage - 1]"></div>
+  
+          <!-- Display DOC/DOCX Content -->
+          <div *ngIf="selectedFormat === 'docx' && textChunks.length > 0" [innerHTML]="textChunks[currentPage - 1]"></div>
+  
+          <!-- Display pdf Content -->
+          <div (mouseup)="onTextSelect()" class="pdf-container">
+            <pdf-viewer *ngIf="pdfscrvariable" [src]="pdfscrvariable" [original-size]="false" [page]="currentPage" [show-all]="false"
+              (after-load-complete)="afterLoadComplete($event)" style="width: 100%; height: 500px">
+            </pdf-viewer>
+          </div>
+  
+  
+          <!-- Ensure canvas is visible when an image is uploaded -->
+          <div *ngIf="imageSrc" class="imagecontainer">
+            <canvas #cropCanvas width="500" height="500" (mousedown)="startCropping($event)"
+              (mousemove)="drawCropArea($event)" (mouseup)="finishCropping()">
+            </canvas>
+            <button (click)="selectFullImage()" class="selectfullimage">Select Full Image</button>
+  
+          </div>
+  
+  
+  
+          <div class="pagination-controls">
+            <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+            <span>Page {{ currentPage }} of {{ textChunks.length || totalPages}}</span>
+            <button (click)="nextPage()" [disabled]="currentPage === textChunks.length">Next</button>
+          </div>
+  
+          <!-- Ensure cropped image is displayed correctly -->
+          <div *ngIf="croppedImageSrc" class="croppedimagecontainer">
+            <img [src]="croppedImageSrc" alt="img" />
+            <button id="extracttext" (click)="extractTextFromImage(this.croppedImageSrc)">Extract text</button>
+          </div>
+  
+  
+          <div *ngIf="selectedTextval" class="selected-text-display">
+            <div class="selectedTextHeading" style="display: flex;justify-content: space-between;">
+            <p><strong>Selected Text:</strong></p>
+            <button (click)="resetSelection()" style="cursor: pointer;width: 30px;background-color: black;color: white;">x</button>
+            </div>
+            
+            <textarea [(ngModel)]="selectedText"></textarea>
+            <button (click)="addSelectedContent()" [disabled]="!selectedText">Add Selected Content</button>
+          </div>
+  
+  
+        </div>
+  
+  
+  
+        <!-- Pagination Controls -->
+  
+        <!-- Selected Content List -->
+        <div class="addselectedcntent" *ngIf="selectedContents.length>0">
+          <p><strong>Added Selected Content:</strong></p>
+          <ul>
+            <li *ngFor="let content of selectedContents; let i = index">
+              <input type="checkbox" [(ngModel)]="selectedItems[i]" (change)="toggleSelection(content, i)">
+              {{ content }}
+              <img src="/assets/images/delete.png" alt="delete" (click)="removeSelectedContent(i)">
+            </li>
+          </ul>
+  
+  
+  
+          <div *ngIf="selectedContents.length > 0" class="added-contents-display">
+  
+            <div class="downloadcontainer">
+              <div class="left-controls">
+                <div class="downloadbuttoncontainer">
+                  <button id="downloadbutton" (click)="download()">⬇ Download</button>
+                  <select [(ngModel)]="selectedFormat" class="custom-select">
+                    <option value="pdf">📄 PDF</option>
+                    <option value="doc">📑 DOC</option>
+                    <option value="txt">📝 TXT</option>
+                  </select>
+                </div>
+  
+                <!-- Summary Level Selection -->
+                <div class="summarizebuttoncontainer">
+                  <select [(ngModel)]="selectedSummaryLevel" class="custom-select" [disabled]="!isAnyContentSelected()">
+                    <option value="">🔍 Select Summary Level</option>
+                    <option value="10">📖 Large</option>
+                    <option value="5">📄 Medium</option>
+                    <option value="2">📑 Small</option>
+                  </select>
+                  <button id="summarizebutton" (click)="sendMessage()">✨ Summarize</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
