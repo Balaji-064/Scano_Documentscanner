@@ -8,11 +8,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { ChatbotService } from '../../Services/chatbot.service';
 import * as cv from '@techstark/opencv-js';
 import { ChatBotComponent } from '../chat-bot/chat-bot.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-camera',
   standalone: true,
-  imports: [CommonModule, FormsModule, ChatBotComponent],
+  imports: [CommonModule, FormsModule, ChatBotComponent,RouterModule],
   templateUrl: './camera.component.html',
   styleUrl: './camera.component.css'
 })

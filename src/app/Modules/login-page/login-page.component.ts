@@ -1,10 +1,10 @@
-import { Component,inject} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CouchService } from '../../Services/couch.service';
 import { v4 as uuidv4 } from 'uuid';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-
+import * as CryptoJS from 'crypto-js';
 @Component({
   selector: 'app-login-page',
   standalone: true,
@@ -45,7 +45,7 @@ export class LoginPageComponent {
   showNewPasswordPage: boolean = false;
   registerPassword: string = '';
 
-  constructor(readonly couchService: CouchService) {}
+  constructor(readonly couchService: CouchService) { }
 
   // Generate Unique IDs
   private generateUuid(): void {
@@ -105,6 +105,7 @@ export class LoginPageComponent {
 
   // User Registration
   create(): void {
+
     this.couchService.getUserDetails().subscribe({
       next: (response: any) => {
         const emailExists = response.rows.some((e: any) => e.value.Email === this.registrationEmail);
@@ -114,13 +115,15 @@ export class LoginPageComponent {
         } else {
           this.generateUuid();
           this.generateUuidLoginDetails();
+          const hashedPassword = CryptoJS.SHA256(this.registerPassword).toString(CryptoJS.enc.Base64);
+          console.log(hashedPassword)
           const data: any = {
             _id: this.userId,
             data: {
               userName: this.userName,
               phoneNumber: this.phoneNumber,
               email: this.registrationEmail,
-              password: this.registerPassword,
+              password: hashedPassword,
               dob: this.dob,
               images: this.images,
               gender: this.gender,
@@ -148,6 +151,8 @@ export class LoginPageComponent {
   // User Login
   login(): void {
     this.generateUuidLogin();
+    const hashedLoginPassword = CryptoJS.SHA256(this.loginPassword).toString(CryptoJS.enc.Base64);
+    console.log(hashedLoginPassword)
     const loginDetails: any = {
       _id: this.loginTimes,
       data: {
@@ -159,13 +164,13 @@ export class LoginPageComponent {
 
     this.couchService.validateUserByEmail(this.loginEmail).subscribe({
       next: (response: any) => {
-        const user = response.rows.find((e: any) => e.value.email === this.loginEmail && e.value.password === this.loginPassword);
+        const user = response.rows.find((e: any) => e.value.email === this.loginEmail && e.value.password === hashedLoginPassword);
 
         if (user) {
           this.userId = user.value._id;
           localStorage.setItem('userId', this.userId);
           this.couchService.addLoginDetails(loginDetails).subscribe({
-            next: () => {},
+            next: () => { },
             error: () => alert('Error occurred while adding login details'),
           });
           alert('Login successful');
@@ -179,18 +184,23 @@ export class LoginPageComponent {
   }
 
   // Generate OTP for Forgot Password
-  generateOTP(): string {
-    const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit OTP
-    alert(`Your OTP is: ${otp}`); // Display OTP in alert
-    return otp;
+  generateOTP() {
+    this.couchService.validateUserByEmail(this.loginEmail).subscribe({
+      next: (response: any) => {
+        if (response.rows.length > 0) {
+          const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit OTP
+          alert(`Your OTP is: ${otp}`); // Display OTP in alert
+          this.generatedOTP = otp;
+          this.showOTPForm();
+        }
+        else {
+          alert("Email not found")
+        }
+      }
+    })
   }
 
-  // Handle Forgot Password
-  forgetPassword(): void {
-    this.generatedOTP = this.generateOTP(); // Generate OTP
-    this.showOTPForm(); // Show OTP form
-  }
-
+  
   // Verify OTP for Forgot Password
   verifyOTP(): void {
     if (this.enteredOTP === this.generatedOTP) {

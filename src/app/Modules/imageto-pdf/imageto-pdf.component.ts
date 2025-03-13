@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { jsPDF } from 'jspdf';
 @Component({
   selector: 'app-imageto-pdf',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './imageto-pdf.component.html',
   styleUrl: './imageto-pdf.component.css'
 })

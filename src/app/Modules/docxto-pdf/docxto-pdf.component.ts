@@ -1,11 +1,12 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import * as mammoth from 'mammoth';
 import { jsPDF } from 'jspdf';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-docxto-pdf',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './docxto-pdf.component.html',
   styleUrls: ['./docxto-pdf.component.css'],
 })

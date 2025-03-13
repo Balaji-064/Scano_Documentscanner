@@ -10,11 +10,12 @@ import Tesseract from 'tesseract.js';
 import { CouchService } from '../../Services/couch.service';
 import { ChatbotService } from '../../Services/chatbot.service';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-file-upload',
   standalone: true,
-  imports: [FormsModule,CommonModule,PdfViewerModule],
+  imports: [FormsModule,CommonModule,PdfViewerModule,RouterModule],
   templateUrl: './file-upload.component.html',
   styleUrl: './file-upload.component.css'
 })

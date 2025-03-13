@@ -45,7 +45,7 @@ router=inject(Router)
     // Perform logout logic (e.g., clear session, navigate to login)
     console.log('User logged out');
     this.isModalOpen = false;
-    localStorage.removeItem(this.userId)
+    localStorage.clear()
     this.router.navigate(['/login']); // Redirect to login page
   }
 

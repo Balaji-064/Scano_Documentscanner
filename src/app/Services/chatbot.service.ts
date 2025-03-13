@@ -15,10 +15,10 @@ export class ChatbotService implements OnInit{
   }
   
 
-  private apiUrl = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent'; // API URL
-  private apiKey = 'AIzaSyCyVbR_wd5meTXg8PQ0Ih8eU0akj5J5u8E'; // API key
+  readonly apiUrl = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent'; // API URL
+  readonly apiKey = 'AIzaSyCyVbR_wd5meTXg8PQ0Ih8eU0akj5J5u8E'; // API key
 
-  constructor(private http: HttpClient) {}
+  constructor(readonly http: HttpClient) {}
 
   // Function to send a message to the chatbot API
   getResponse(message: string,summarizelevel?:string): Observable<any> {

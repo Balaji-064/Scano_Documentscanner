@@ -1,22 +1,24 @@
-
+<button routerLink="/home">Back to home</button>
 <div class="container">
-    <h1>DOCX to PDF Converter</h1>
-  
-    <!-- File Input -->
-    <input type="file" (change)="onFileChange($event)" accept=".docx" />
-    
-    <!-- Pagination Controls -->
-    <div class="pagination-controls">
-      <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
-      <span>Page {{currentPage}} of {{totalPages}}</span>
-      <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
-    </div>
-  
-    <!-- Preview Container -->
-    <div #previewContainer class="preview-container">
-      <div [innerHTML]="previewContent"></div>
-    </div>
-  
-    <!-- Download Button -->
-    <button (click)="onDownloadClick()">Download as PDF</button>
+  <h1>DOCX to PDF Converter</h1>
+
+  <!-- File Input -->
+  <input type="file" (change)="onFileChange($event)" accept=".docx" />
+
+
+
+  <!-- Preview Container -->
+  <div #previewContainer class="preview-container">
+    <div [innerHTML]="previewContent"></div>
   </div>
+  <!-- Pagination Controls -->
+  <div class="pagination-controls">
+    <button (click)="prevPage()" [disabled]="currentPage === 1"><i class="fa-solid fa-circle-chevron-left"></i></button>
+    <span>Page {{currentPage}} of {{totalPages}}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages"><i
+        class="fa-solid fa-circle-chevron-right"></i></button>
+  </div>
+
+  <!-- Download Button -->
+  <button (click)="onDownloadClick()">Download as PDF</button>
+</div>
