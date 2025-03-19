@@ -4,9 +4,6 @@
 
   <!-- File Input -->
   <input type="file" (change)="onFileChange($event)" accept=".docx" />
-
-
-
   <!-- Preview Container -->
   <div #previewContainer class="preview-container">
     <div [innerHTML]="previewContent"></div>
@@ -18,7 +15,6 @@
     <button (click)="nextPage()" [disabled]="currentPage === totalPages"><i
         class="fa-solid fa-circle-chevron-right"></i></button>
   </div>
-
-  <!-- Download Button -->
+ <!-- Download Button -->
   <button (click)="onDownloadClick()">Download as PDF</button>
 </div>

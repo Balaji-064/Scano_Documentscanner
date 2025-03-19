@@ -23,48 +23,28 @@ export class ChatBotComponent  {
   onlyDate: any;
   finalCapturedPhoto: any;
   capturedPhoto: any;
-  
-  
+
   constructor(readonly chat: ChatbotService, readonly couch: CouchService) { }
-
-
   @Input() extractedText = this.chat.extractedText;
   @Input()summarylevel=this.chat.summarylevel
-  
-
-
   sendMessage(summarylevel:string): void {
     
     if (this.extractedText.trim()) {
       this.extractedTextfinal = this.extractedText
-      
-      // Add user message to the chat
-
-
-
+       // Add user message to the chat
       // Get response from the chatbot API
       this.chat.getResponse(this.extractedTextfinal,summarylevel).subscribe(response => {
-
         this.summarizedText = response.candidates[0].content.parts[0].text
         this.summarylevel=''
-
-
-
       });
       console.log(this.extractedText);
       console.log(this.summarizedText)
-
-
-
-
-
-
       // Clear the input field
       this.extractedText = '';
     }
   }
   generateuuid() {
-    this.documentid = `document_2_"${uuidv4()}"`;
+    this.documentid = `document_2_${uuidv4()}`;
   }
 
 }

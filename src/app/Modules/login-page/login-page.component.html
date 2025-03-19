@@ -10,7 +10,7 @@
           <div class="input-icon">
             <i class="fas fa-user"></i>
             <input [(ngModel)]="userName" name="userName" id="userName" placeholder="Username" minlength="4"
-              #username="ngModel" pattern="^[a-zA-Z]{1,15}$" required />
+              #username="ngModel" pattern="^[a-zA-Z]{1,15}$" required autocomplete="off" />
           </div>
           <div *ngIf="username.invalid && username.touched" style="color:red;">
             <small>Username must be 4-15 characters only.</small>
@@ -56,7 +56,7 @@
           <label for="Confirmpassword">Confirm Password</label>
           <div class="input-icon">
             <i class="fas fa-lock"></i>
-            <input [(ngModel)]="confirmPassword" type="text" minlength="8" name="ConfirmPassword"
+            <input [(ngModel)]="confirmPassword" type="password" minlength="8" name="ConfirmPassword"
               id="confirmPassword" #confirmpassword="ngModel" placeholder="ConfirmPassword"
               pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" required />
           </div>
@@ -132,6 +132,8 @@
       <h2>Enter OTP</h2>
       <input [(ngModel)]="enteredOTP" required maxlength="6" placeholder="Enter the OTP" />
       <button (click)="verifyOTP()">Verify OTP</button>
+      
+
       <p *ngIf="otpInvalid" style="color:red;">Invalid OTP</p>
     </div>
 

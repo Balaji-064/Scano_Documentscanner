@@ -14,7 +14,6 @@ export class ImagetoPdfComponent {
   capturedImages: string[] = []; // Array to store URLs of captured images
   stream: MediaStream | null = null; // Camera stream
   isCameraStarted: boolean = false; // To track if the camera is started
-
   // Handle file selection for uploading images
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -28,7 +27,6 @@ export class ImagetoPdfComponent {
       }
     }
   }
-
   // Start the camera
   async startCamera(): Promise<void> {
     try {
@@ -42,22 +40,18 @@ export class ImagetoPdfComponent {
   // Capture an image from the camera
   captureImage(): void {
     if (!this.stream) return;
-
     const videoElement = document.querySelector('#cameraFeed') as HTMLVideoElement;
     const canvas = document.createElement('canvas');
     canvas.width = videoElement.videoWidth;
     canvas.height = videoElement.videoHeight;
     const context = canvas.getContext('2d');
     context?.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-
     // Convert canvas to data URL and add to captured images
     const capturedImageUrl = canvas.toDataURL('image/jpeg');
     this.capturedImages.push(capturedImageUrl);
-
     // Stop the camera after capturing
     this.stopCamera();
   }
-
   // Stop the camera
   stopCamera(): void {
     if (this.stream) {
@@ -66,7 +60,6 @@ export class ImagetoPdfComponent {
       this.isCameraStarted = false;
     }
   }
-
   // Delete an image (uploaded or captured)
   deleteImage(index: number, isCaptured: boolean): void {
     if (isCaptured) {
@@ -75,12 +68,10 @@ export class ImagetoPdfComponent {
       this.imageUrls.splice(index, 1);
     }
   }
-
   // Check if PDF generation is enabled
   isGeneratePdfEnabled(): boolean {
     return this.imageUrls.length > 0 || this.capturedImages.length > 0;
   }
-
   // Generate PDF from uploaded and captured images
   generatePDF(): void {
     const pdf = new jsPDF();

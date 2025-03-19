@@ -34,7 +34,7 @@ export class LoginPageComponent {
   otpInvalid: boolean = false;
   otpTouched: boolean = false;
   enteredOTP: string = '';
-  generatedOTP: string = '';
+  generatedOTP: string | null= '';
   routerVariable = inject(Router);
 
   // Flags for form toggling
@@ -106,9 +106,11 @@ export class LoginPageComponent {
   // User Registration
   create(): void {
 
-    this.couchService.getUserDetails().subscribe({
+    this.couchService.validateUserByEmail(this.registrationEmail).subscribe({
       next: (response: any) => {
-        const emailExists = response.rows.some((e: any) => e.value.Email === this.registrationEmail);
+        console.log(response);
+
+        const emailExists = response.rows.some((e: any) => e.value);
 
         if (emailExists) {
           alert('The email address is already in use. Please use a different email.');
@@ -164,7 +166,7 @@ export class LoginPageComponent {
 
     this.couchService.validateUserByEmail(this.loginEmail).subscribe({
       next: (response: any) => {
-        const user = response.rows.find((e: any) => e.value.email === this.loginEmail && e.value.password === hashedLoginPassword);
+        const user = response.rows.find((e: any) => e.value.data.email === this.loginEmail && e.value.data.password === hashedLoginPassword);
 
         if (user) {
           this.userId = user.value._id;
@@ -191,7 +193,18 @@ export class LoginPageComponent {
           const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit OTP
           alert(`Your OTP is: ${otp}`); // Display OTP in alert
           this.generatedOTP = otp;
-          this.showOTPForm();
+          
+        // Set the OTP expiry timeout (e.g., 5 minutes)
+        const otpTimeout = 5 * 60 * 1000; // 5 minutes in milliseconds
+        
+        // Set the timeout to disable the OTP after the specified period
+        setTimeout(() => {
+          this.generatedOTP = null; // Clear the OTP after timeout
+          alert("Your OTP has expired. Please request a new one.");
+        }, otpTimeout);
+
+        this.showOTPForm();
+         
         }
         else {
           alert("Email not found")
@@ -200,7 +213,7 @@ export class LoginPageComponent {
     })
   }
 
-  
+
   // Verify OTP for Forgot Password
   verifyOTP(): void {
     if (this.enteredOTP === this.generatedOTP) {
@@ -212,17 +225,21 @@ export class LoginPageComponent {
   // Reset Password
   resetPassword(): void {
     if (this.newPassword === this.newConfirmPassword) {
-      this.couchService.getUserDetails().subscribe({
+      const hashedNewPassword = CryptoJS.SHA256(this.newPassword).toString(CryptoJS.enc.Base64);
+      console.log("Hashed New Password: ", hashedNewPassword);
+      this.couchService.validateUserByEmail(this.loginEmail).subscribe({
         next: (response: any) => {
-          const existData = response.rows.find((user: any) => user.value.data.email === this.loginEmail);
+          console.log(response.rows[0].value)
+          const existData = response.rows[0].value;
           if (existData) {
-            const updatedData = { ...existData.value.data, password: this.newPassword };
+            const updatedData = { ...existData, data: { ...existData.data, password: hashedNewPassword } };
 
-            this.couchService.updatePassword(existData._id, { ...existData.value, data: updatedData }).subscribe({
+            this.couchService.updatePassword(existData._id, updatedData).subscribe({
               next: () => {
                 alert('Password reset successful');
                 this.showLoginPage = true;
                 this.showNewPasswordPage = false;
+
               },
               error: () => alert('Error occurred while resetting the password'),
             });

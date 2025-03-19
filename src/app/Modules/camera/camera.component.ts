@@ -135,7 +135,7 @@ export class CameraComponent {
   }
 
   // Mouse Up for Cropping
-  onMouseUp(event: MouseEvent): void {
+  onMouseUp(): void {
     this.isDrawing = false;
   }
 
@@ -166,43 +166,72 @@ export class CameraComponent {
     );
 
     this.croppedImage = croppedCanvas.toDataURL('image/png');
+    
   }
 
   // Preprocess Image for Better OCR Accuracy
-  async preprocessImage(imageData: string, factor: number): Promise<string> {
+  preprocessImage(imageData: string, callback: (preprocessedImage: string) => void): void {
     const img = new Image();
     img.src = imageData;
-    await new Promise((resolve) => (img.onload = resolve));
 
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d')!;
-    canvas.width = img.width;
-    canvas.height = img.height;
-    ctx.drawImage(img, 0, 0);
+    // Use onload to handle image loading
+    img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d')!;
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
 
-    const src = cv.imread(canvas);
-    const dst = new cv.Mat();
-    cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
-    cv.bilateralFilter(src, dst, 9, 75, 75, cv.BORDER_DEFAULT);
+        const src = cv.imread(canvas);
+        const dst = new cv.Mat();
 
-    const clahe = new cv.CLAHE(2.0, new cv.Size(8, 8));
-    clahe.apply(dst, dst);
+        // Step 1: Convert to grayscale
+        cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
 
-    cv.threshold(dst, dst, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU);
+        // Step 2: Apply Gaussian Blur to reduce noise
+        cv.GaussianBlur(src, dst, new cv.Size(7, 7), 0);
 
-    const kernel = cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(2, 2));
-    cv.morphologyEx(dst, dst, cv.MORPH_CLOSE, kernel);
+        // Step 3: Apply Bilateral Filter to preserve edges while reducing noise
+        cv.bilateralFilter(dst, dst, 15, 75, 75, cv.BORDER_DEFAULT);
 
-    cv.imshow(canvas, dst);
-    const preprocessedImage = canvas.toDataURL('image/png');
+        // Step 4: Apply CLAHE for contrast enhancement
+        const clahe = new cv.CLAHE(3.0, new cv.Size(16, 16));
+        clahe.apply(dst, dst);
 
-    src.delete();
-    dst.delete();
-    clahe.delete();
-    kernel.delete();
+        // Step 5: Apply adaptive thresholding
+        cv.adaptiveThreshold(dst, dst, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 15, 5);
 
-    return preprocessedImage;
-  }
+        // Step 6: Apply morphological operations
+        const kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE, new cv.Size(5, 5));
+        cv.morphologyEx(dst, dst, cv.MORPH_CLOSE, kernel);
+        cv.morphologyEx(dst, dst, cv.MORPH_OPEN, kernel);
+
+        // Step 7: Apply Canny edge detection
+        cv.Canny(dst, dst, 75, 200);
+
+        // Step 8: Optional - Apply histogram equalization
+        cv.equalizeHist(dst, dst);
+
+        // Step 9: Display the result on the canvas
+        cv.imshow(canvas, dst);
+        const preprocessedImage = canvas.toDataURL('image/png');
+
+        // Clean up
+        src.delete();
+        dst.delete();
+        clahe.delete();
+        kernel.delete();
+
+        // Pass the preprocessed image to the callback
+        callback(preprocessedImage);
+    };
+
+    // Handle image loading errors
+    img.onerror = (error) => {
+        console.error('Error loading image:', error);
+        callback(''); // Return an empty string or handle the error as needed
+    };
+}
 
   // Extract Text Using Tesseract.js
   extractTextFromImage(imageData: string): void {
@@ -211,7 +240,7 @@ export class CameraComponent {
       return;
     }
 
-    Tesseract.recognize(imageData, 'eng+tam+hin')
+    Tesseract.recognize(imageData, 'eng')
       .then(({ data: { text } }) => {
         this.extractedText = text;
         this.chat.extractedText = this.extractedText;

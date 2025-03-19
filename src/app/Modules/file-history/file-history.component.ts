@@ -35,7 +35,7 @@ export class FileHistoryComponent implements OnInit  {
   fileName: string='';
   downloadfile: boolean=false;
 
-  constructor(private data: CouchService, private sanitizer: DomSanitizer) {}
+  constructor(readonly data: CouchService, readonly sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
     this.getDocuments();

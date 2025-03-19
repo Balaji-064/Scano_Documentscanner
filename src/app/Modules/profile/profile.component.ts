@@ -13,7 +13,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 })
 export class ProfileComponent implements OnInit {
   // Define all variables in the class
-  rev: string = '';
+  
   profileDetail: any = {};
   phoneNumber: string = '';
   userId: string = '';
@@ -25,11 +25,12 @@ export class ProfileComponent implements OnInit {
   gender: string = '';
   phone: string = '';
   userName: string = '';
+  rev: string = '';
   isDisableEditing: boolean = true;
 
   constructor(readonly couch: CouchService) {}
 
-  // Lifecycle hook to fetch the user profile on component initialization
+  // initilizer
   ngOnInit(): void {
     this.userId = localStorage.getItem('userId')!;
     console.log(this.userId);
@@ -81,10 +82,10 @@ export class ProfileComponent implements OnInit {
         gender: this.gender,
         firstName: this.firstName,
         lastName: this.lastName,
-        phone: this.phone,
         userName: this.userName,
         images: this.images,
         phoneNumber: this.phoneNumber
+        
       }
     };
 

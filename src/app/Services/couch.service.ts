@@ -48,21 +48,15 @@ profileUpdate(id:string,data:any,rev:any){
 addLoginDetails(data: any) {
   return this.http.post<any>(this.baseURL, data, { headers: this.headers });
 }
-getUserDetails(): any {
-  return this.http.get(`https://192.168.57.185:5984/scano/_design/view/_view/users_by_id`, { headers: this.headers });
-}
-getUserDetailById(_id: string) {
-  return this.http.get<any>(`https://192.168.57.185:5984/scano/_design/view/_view/users_by_id?include_docs=true&key="${_id}"`, { headers: this.headers });
-}
 
+getUserDetailById(_id: string) {
+  return this.http.get<any>(`${this.baseURL}/_design/view/_view/users_by_id?include_docs=true&key="${_id}"`, { headers: this.headers });
+}
 updatePassword(_id: string, data: any) {
   // Fetch the user's current data from CouchDB
-  return this.http.put<any>(`https://192.168.57.185:5984/scano/${_id}`, data, { headers: this.headers });
+  return this.http.put<any>(`${this.baseURL}/${_id}`, data, { headers: this.headers });
 }
 validateUserByEmail(email: string) {
-  return this.http.get<any>(`https://192.168.57.185:5984/scano/_design/view/_view/authenticate_by_email?key="${email}"`, { headers: this.headers });
+  return this.http.get<any>(`${this.baseURL}/_design/view/_view/authenticate_by_email?key="${email}"`, { headers: this.headers });
 }
-
-
-
 }

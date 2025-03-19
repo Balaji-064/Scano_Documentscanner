@@ -16,7 +16,7 @@ export class SidebarComponent {
   profileDetail:any=[]
   isModalOpen:boolean=false
   logout: boolean=false;
-router=inject(Router)
+  router=inject(Router)
   constructor(readonly couch:CouchService){}
   ngOnInit(){
     this.userId = localStorage.getItem("userId")!

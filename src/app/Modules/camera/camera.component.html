@@ -1,56 +1,29 @@
 <button routerLink="/home">Back to home</button>
-
 <div class="container">
     <!-- Video Feed from the Camera -->
- 
-    <video *ngIf="!capturedPhoto" #video width="640" height="480" autoplay></video>
+     <video *ngIf="!capturedPhoto" #video width="640" height="480" autoplay></video>
 
     <!-- Canvas to Display Captured Photo and Cropping Area -->
     <canvas #canvas (mousedown)="onMouseDown($event)" (mousemove)="onMouseMove($event)"
-        (mouseup)="onMouseUp($event)"></canvas>
+        (mouseup)="onMouseUp()"></canvas>
 
     <!-- Buttons for Actions -->
     <div class="controls">
         <button *ngIf="this.stream" (click)="capturePhoto()">Capture Photo</button>
         <button  *ngIf="this.capturedPhoto!==null" (click)="retakeButton()">Retake</button>
         <button (click)="cropImage()">Crop Image</button>
+        <button (click)="selectFullImage() ">Full image</button>
         <button (click)="extractTextFromImage(croppedImage)">Extract Text (OCR)</button>
-        <button (click)="selectFullImage() ">extract</button>
     </div>
 
     <!--  Cropped Image -->
-    
-
     <div *ngIf="croppedImage">
         <h3>Cropped Image</h3>
         <img [src]="croppedImage" alt="img" style="max-width: 100%; max-height: 300px;">
     </div>
-
-    
 </div>
-<p>{{extractedText}}</p>
+
 <app-chat-bot [extractedText]="extractedText"></app-chat-bot>
-
-
-  
-  
-  
-
-  <!-- <div class="chat-container">
-    <div class="chat-box">
-      <div class="chat-message">
-        <p>{{ extractedTextfinal}}</p>
-        <p>{{summarizedText}}</p>
-      </div>
-    </div>
-  
-    <input
-      type="text"
-      [(ngModel)]="extractedText"
-      placeholder="Type a message..."
-      (keyup.enter)="sendMessage()"
-    />
-    <button (click)="sendMessage()">Send</button>-->
-    <button *ngIf="userid" (click)="addToCouch()">add</button> 
+ <button *ngIf="userid" (click)="addToCouch()">goto file history</button> 
 
  

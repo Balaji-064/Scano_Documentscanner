@@ -1,15 +1,11 @@
-
 <div class="container">
   <div class="box box1">
     <app-sidebar></app-sidebar>
   </div>
-    
-  
     <!-- Middle Section (50%) -->
     <div class="box box2">
       <!-- Button to trigger modal -->
       <button class="pdfConvertorButton" (click)="openModal()">Pdf convertor</button>
-  
       <!-- Modal Overlay -->
       <div class="modal" *ngIf="isModalOpen">
         <div class="modal-content">
@@ -21,8 +17,7 @@
             <button class="btn" routerLink="/doc"> doc to pdf</button>
           </div>
         </div>
-        
-        </div>
+      </div>
       </div>
   
       <!-- Centered Dashed Box -->
@@ -40,13 +35,8 @@
           Your browser does not support the video tag.
         </video>
       </div>
-  
-  
-  
-    </div>
-  
-  
-    <!-- Right Section (Remaining Width) -->
+  </div>
+   <!-- Right Section (Remaining Width) -->
     <div class="box box3">
       <h3>Explore Our Key Features</h3>
       <ul class="extra-list">
@@ -58,11 +48,6 @@
           <strong>Secure Storage</strong><br>
           Store and access your files securely from anywhere. Your data is safe with us!
         </li>
-  
       </ul>
-  
-     
-  
-  
     </div>
   </div>

@@ -26,7 +26,8 @@ export class LandingPageComponent {
     this.dots = Array.from(document.getElementsByClassName('dot')) as HTMLElement[];
   }
   showSlides(): void {
-    if (this.slides.length === 0 || this.dots.length === 0) return;
+    if (this.slides.length === 0 || this.dots.length === 0) 
+      return;
 
     // Hide all slides
     this.slides.forEach(slide => (slide.style.display = 'none'));
